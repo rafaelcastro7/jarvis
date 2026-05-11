@@ -280,3 +280,58 @@ rm -f public/videos/*.part public/videos/*.part-* public/videos/*.ytdl
 - [ ] safe_fname guardado en JSON, nunca recalculado en JS
 - [ ] Limpiar .part antes de build
 - [ ] sessionStorage (no localStorage) para progreso en el clon
+- [ ] Quiz solver: text-based matching (no índices fijos — Skilljar randomiza)
+- [ ] Satisfaction surveys: click LAST radio en el grupo (rating más alto)
+
+---
+
+## Skilljar LMS — Técnicas validadas (Anthropic Academy 2026-05-11)
+
+### Quiz Solver con Text-Based Matching
+```python
+CORRECT_SET = set()  # textos exactos de opciones correctas aprendidas
+WRONG_SET = set()    # textos exactos de opciones incorrectas
+
+# Elegir opción
+match = next((o for o in opts if o['label'] in CORRECT_SET), None)
+if not match:
+    candidates = [o for o in opts if o['label'] not in WRONG_SET]
+    is_satisfaction = any(kw in ' '.join(o['label'] for o in candidates).lower()
+                         for kw in ['very satisfied', 'very likely', 'extremely', 'not at all'])
+    match = candidates[-1] if is_satisfaction else max(candidates, key=lambda o: len(o['label']))
+
+# Actualizar sets desde Show Answers
+positions = {}  # {q_pos: 'correct'/'incorrect'} del HTML de Show Answers
+for q_pos, status in positions.items():
+    txt = chosen_history[attempt].get(q_pos)
+    if txt:
+        (CORRECT_SET if status == 'correct' else WRONG_SET).add(txt)
+```
+
+### CDP Connect a Chrome ya logueado
+```python
+async with async_playwright() as p:
+    b = await p.chromium.connect_over_cdp('http://localhost:9222')
+    page = b.contexts[0].pages[0]
+# Chrome debe iniciarse con: chrome.exe --remote-debugging-port=9222
+```
+
+### Descargar PDF con fetch desde browser (CDN signed URLs)
+```python
+pdf_url = await page.evaluate('''() => {
+    const a = Array.from(document.querySelectorAll('a')).find(a =>
+        /download.*pdf|pdf.*download/i.test(a.textContent) || /pdf/i.test(a.href));
+    return a ? a.href : null;
+}''')
+content = await page.evaluate('''async (url) => {
+    const resp = await fetch(url, {credentials: "include"});
+    const buf = await resp.arrayBuffer();
+    const bytes = new Uint8Array(buf);
+    let binary = "";
+    for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    return {data: btoa(binary)};
+}''', pdf_url)
+import base64
+with open(pdf_path, 'wb') as f:
+    f.write(base64.b64decode(content['data']))
+```
