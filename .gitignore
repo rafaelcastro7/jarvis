@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.env
+node_modules/
+dist/
+.venv/
+venv/
+src/rag/index.json
+downloads/
+*.part
+*.part-*
+*.ytdl
