@@ -1,0 +1,17 @@
+Técnicas Avanzadas de Anti-Detección para Scraping (2026)
+
+1. TLS Fingerprinting (JA3/JA3S):
+Muchos sitios ahora detectan la librería cliente (como requests de Python) por el handshake de TLS. 
+Solución: Usar librerías que permitan emular el fingerprint de navegadores reales (ej. curl_cffi o wrappers de Playwright).
+
+2. HTTP/2 y HTTP/3:
+Los navegadores modernos usan HTTP/2 por defecto. Si tu scraper usa HTTP/1.1, es una señal clara de bot.
+Asegúrate de que tu cliente soporte y prefiera HTTP/2.
+
+3. Canvas Fingerprinting:
+Los sitios ejecutan scripts de JS para dibujar en un canvas oculto y generar un ID único del navegador.
+Solución: Usar 'mask_automation' para interceptar estas llamadas y devolver valores ruidosos o realistas.
+
+4. Comportamiento Biométrico:
+Los bots suelen hacer click en el centro exacto de los botones.
+Solución: Generar coordenadas de click aleatorias dentro del área del botón y usar curvas de Bézier para el movimiento del mouse.

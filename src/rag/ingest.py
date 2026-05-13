@@ -1,6 +1,6 @@
 """
-ingest.py — Indexa todos los documentos de knowledge/ en una base vectorial local.
-Usa nomic-embed-text (Ollama) + JSON file store (sin base de datos externa).
+ingest.py — Indexa todos los documentos de knowledge/ y skills/ en una base vectorial local.
+Usa nomic-embed-text (Ollama) + JSON file store.
 """
 import sys; sys.stdout.reconfigure(encoding='utf-8', line_buffering=True)
 import json
@@ -14,6 +14,7 @@ except ImportError:
 
 JARVIS_DIR = Path(__file__).parent.parent.parent
 KNOWLEDGE_DIR = JARVIS_DIR / "knowledge"
+SKILLS_DIR = JARVIS_DIR / "skills"
 INDEX_FILE = JARVIS_DIR / "src" / "rag" / "index.json"
 EMBED_MODEL = "nomic-embed-text"
 CHUNK_SIZE = 800
@@ -46,7 +47,7 @@ def cosine_sim(a: list[float], b: list[float]) -> float:
 
 
 def extract_text(file_path: Path) -> str:
-    if file_path.suffix.lower() == ".md" or file_path.suffix.lower() == ".txt":
+    if file_path.suffix.lower() in [".md", ".txt"]:
         return file_path.read_text(encoding='utf-8', errors='ignore')
     elif file_path.suffix.lower() == ".pdf":
         try:
@@ -63,10 +64,14 @@ def ingest():
     index = []
     extensions = ["*.md", "*.txt", "*.pdf"]
     files = []
-    for ext in extensions:
-        files.extend(list(KNOWLEDGE_DIR.rglob(ext)))
     
-    print(f"Indexando {len(files)} archivos de {KNOWLEDGE_DIR}...")
+    # Buscar en knowledge y skills
+    for root in [KNOWLEDGE_DIR, SKILLS_DIR]:
+        if not root.exists(): continue
+        for ext in extensions:
+            files.extend(list(root.rglob(ext)))
+    
+    print(f"Indexando {len(files)} archivos...")
 
     for f in files:
         text = extract_text(f)
@@ -82,7 +87,7 @@ def ingest():
                 index.append({
                     "file": rel_path,
                     "chunk": i,
-                    "text": chunk[:800], # Guardamos un poco más de contexto
+                    "text": chunk[:800],
                     "embedding": vec,
                 })
                 print(f"  [{rel_path}] chunk {i+1}/{len(chunks)}")
@@ -107,7 +112,6 @@ def search(query: str, top_k: int = 5) -> list[dict]:
 
 
 if __name__ == "__main__":
-    import sys
     if len(sys.argv) > 1 and sys.argv[1] == "search":
         query = " ".join(sys.argv[2:]) or "agentic loop"
         results = search(query)
