@@ -42,6 +42,16 @@ def get_god_mode_agent():
         # Importante: Esto toma control del navegador real
         return str(run_browser_task(task))
 
+    from src.tools.aider_agent import run_aider_task
+
+    # 4. Herramienta Auto-Parcheo (Aider)
+    def aider_tool(args: str) -> str:
+        # args expected: "description | file1.py file2.py"
+        parts = args.split("|")
+        desc = parts[0].strip()
+        files = parts[1].strip().split() if len(parts) > 1 else []
+        return run_aider_task(desc, files)
+
     tools = [
         Tool(
             name="Search_Local_Knowledge",
@@ -57,8 +67,14 @@ def get_god_mode_agent():
             name="Web_Browser",
             func=browser_tool,
             description="Útil para navegar por internet, buscar información actualizada o automatizar acciones en la web. La entrada es la tarea que debe realizar el navegador."
+        ),
+        Tool(
+            name="Self_Patch_Code",
+            func=aider_tool,
+            description="Útil para auto-programar, escribir código o arreglar bugs en el repositorio. La entrada debe ser 'descripcion de la tarea | archivo1.py archivo2.py'."
         )
     ]
+
 
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
     
