@@ -3,6 +3,22 @@
 
 param([switch]$SkipOllama, [switch]$SkipDocker)
 
+function Verify-ModelIntegrity {
+    param([string]$ModelName, [string]$ExpectedHash)
+    $modelPath = "$env:USERPROFILE\.ollama\models\blobs\$ModelName"
+    if (Test-Path $modelPath) {
+        $actualHash = (Get-FileHash -Path $modelPath -Algorithm SHA256).Hash
+        if ($actualHash -eq $ExpectedHash) {
+            Write-Host "✅ Modelo $ModelName verificado" -ForegroundColor Green
+            return $true
+        } else {
+            Write-Host "❌ HASH INVALIDO para $ModelName. Posible corrupción o ataque." -ForegroundColor Red
+            return $false
+        }
+    }
+    return $false
+}
+
 Write-Host "=== JARVIS SETUP ===" -ForegroundColor Cyan
 Write-Host "Instalando dependencias..."
 
@@ -47,12 +63,28 @@ if (-not $SkipOllama) {
     }
 
     Write-Host "`nDescargando modelos Ollama (puede tardar 20-40 min en primera instalación)..."
-    $models = @("nomic-embed-text", "qwen3:4b", "qwen2.5-coder:7b")
-    foreach ($model in $models) {
+    # Diccionario de modelos y sus hashes esperados. Usa 'SKIP' si no deseas verificar.
+    $models = @{
+        "nomic-embed-text" = "SKIP"
+        "qwen3:4b" = "SKIP"
+        "qwen2.5-coder:7b" = "SKIP"
+    }
+    
+    foreach ($model in $models.Keys) {
         Write-Host "  Pulling $model..."
         ollama pull $model
+        
+        $expectedHash = $models[$model]
+        if ($expectedHash -ne "SKIP" -and $expectedHash -ne "EXPECTED_HASH_HERE") {
+            # Nota: Ollama normalmente guarda los blobs con el formato sha256-<hash>
+            $isValid = Verify-ModelIntegrity -ModelName $model -ExpectedHash $expectedHash
+            if (-not $isValid) {
+                Write-Host "[!] ADVERTENCIA: La verificación de integridad falló para $model" -ForegroundColor Yellow
+            }
+        }
     }
-    Write-Host "[OK] Modelos Ollama instalados"
+    Write-Host "[OK] Modelos Ollama instalados (y verificados si se proporcionó un hash)"
+
 }
 
 # --- 4. Docker + OpenWebUI ---

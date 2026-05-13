@@ -61,7 +61,11 @@ def extract_text(file_path: Path) -> str:
 
 
 def ingest():
-    index = []
+    from chroma_store import add_documents, reset_db
+    
+    # Limpiamos la base de datos anterior si vamos a re-indexar todo
+    reset_db()
+    
     extensions = ["*.md", "*.txt", "*.pdf"]
     files = []
     
@@ -71,7 +75,10 @@ def ingest():
         for ext in extensions:
             files.extend(list(root.rglob(ext)))
     
-    print(f"Indexando {len(files)} archivos...")
+    print(f"Indexando {len(files)} archivos en ChromaDB...")
+
+    texts_batch = []
+    meta_batch = []
 
     for f in files:
         text = extract_text(f)
@@ -82,33 +89,24 @@ def ingest():
         rel_path = str(f.relative_to(JARVIS_DIR))
 
         for i, chunk in enumerate(chunks):
-            try:
-                vec = embed(chunk)
-                index.append({
-                    "file": rel_path,
-                    "chunk": i,
-                    "text": chunk[:800],
-                    "embedding": vec,
-                })
-                print(f"  [{rel_path}] chunk {i+1}/{len(chunks)}")
-            except Exception as e:
-                print(f"  [ERROR] {rel_path} chunk {i}: {e}")
+            texts_batch.append(chunk)
+            meta_batch.append({"source": rel_path, "chunk_id": i})
+            
+            # Guardamos en lotes de 100 para no saturar memoria/Chroma
+            if len(texts_batch) >= 100:
+                add_documents(texts_batch, meta_batch)
+                texts_batch = []
+                meta_batch = []
 
-    INDEX_FILE.parent.mkdir(parents=True, exist_ok=True)
-    INDEX_FILE.write_text(json.dumps(index, ensure_ascii=False), encoding='utf-8')
-    print(f"\nIndexados {len(index)} chunks → {INDEX_FILE}")
+    if texts_batch:
+        add_documents(texts_batch, meta_batch)
+        
+    print(f"\n✅ Indexación completada con ChromaDB.")
 
 
 def search(query: str, top_k: int = 5) -> list[dict]:
-    if not INDEX_FILE.exists():
-        print("Ejecuta primero: python src/rag/ingest.py")
-        return []
-
-    index = json.loads(INDEX_FILE.read_text(encoding='utf-8'))
-    q_vec = embed(query)
-    scored = [(cosine_sim(q_vec, item["embedding"]), item) for item in index]
-    scored.sort(reverse=True, key=lambda x: x[0])
-    return [{"score": round(s, 3), **item} for s, item in scored[:top_k]]
+    from chroma_store import search as chroma_search
+    return chroma_search(query, top_k=top_k)
 
 
 if __name__ == "__main__":
@@ -116,7 +114,8 @@ if __name__ == "__main__":
         query = " ".join(sys.argv[2:]) or "agentic loop"
         results = search(query)
         for r in results:
-            print(f"\n[{r['score']}] {r['file']} chunk {r['chunk']}")
+            print(f"\n[Score: {r['score']}] {r['file']} chunk {r['chunk']}")
             print(r['text'][:300])
     else:
         ingest()
+
