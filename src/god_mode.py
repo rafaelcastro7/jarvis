@@ -76,7 +76,8 @@ def get_god_mode_agent():
     ]
 
 
-    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+    from langchain.memory import ConversationBufferWindowMemory
+    memory = ConversationBufferWindowMemory(memory_key="chat_history", return_messages=True, k=5)
     
     agent = initialize_agent(
         tools, 
@@ -89,7 +90,19 @@ def get_god_mode_agent():
     
     return agent
 
+def check_dependencies():
+    """Verifica que los servicios críticos estén disponibles antes de iniciar."""
+    import subprocess
+    try:
+        # Verificar Ollama
+        res = subprocess.run(["ollama", "list"], capture_output=True, timeout=5)
+        if res.returncode != 0:
+            print("⚠️ Advertencia: Ollama no parece estar corriendo o devolvió error.")
+    except Exception:
+        print("⚠️ Advertencia: Ollama no está instalado o en el PATH.")
+
 def main():
+    check_dependencies()
     print("==============================================")
     print("🤖 JARVIS GOD MODE ACTIVADO")
     print("==============================================")

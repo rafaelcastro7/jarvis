@@ -1,9 +1,0 @@
----
-name: forensic-analysis
-description: Motor de análisis forense de contratos públicos. Reglas heurísticas de riesgo, similitud semántica con embeddings Ollama, scoring ponderado, detección de fraccionamiento/bunching/abuso de directa. Implementado en GobIA Auditor.
-tools: Read, Edit, Write
----
-
-# Forensic Analysis — Motor de Riesgo de Contratos
-
-## Resultado de análisis (`AnalysisResult

@@ -50,7 +50,7 @@ def search(query: str, top_k: int = 3, use_hyde: bool = False):
     if use_hyde:
         try:
             from langchain_community.chat_models import ChatOllama
-            from langchain.schema import HumanMessage
+            from langchain_core.messages import HumanMessage
             
             # Generamos un documento hipotético que responda a la query
             llm = ChatOllama(model="qwen2.5-coder:7b", base_url="http://localhost:11434")

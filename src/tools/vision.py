@@ -5,36 +5,37 @@ Permite a Jarvis entender imágenes locales.
 import sys; sys.stdout.reconfigure(encoding='utf-8', line_buffering=True)
 import warnings
 from PIL import Image
-
-# Ignorar advertencias de HuggingFace/Transformers para salida más limpia
-warnings.filterwarnings("ignore")
+import threading
 
 # Instancia global para no recargar el modelo en cada llamada
 _moondream_model = None
+_vision_lock = threading.Lock()
 
 def init_vision_model():
     """Inicializa y cachea el modelo Moondream (pequeño y rápido)."""
     global _moondream_model
-    if _moondream_model is None:
-        print("Cargando modelo de visión Moondream2 (solo la primera vez)...")
-        import moondream as md
-        # moondream pypi package es un wrapper pequeño. A veces se carga directo desde transformers
-        try:
-            from transformers import AutoModelForCausalLM, AutoTokenizer
-            model_id = "vikhyatk/moondream2"
-            revision = "2024-08-26"
-            
-            # Usar AutoModel en vez de un wrapper si moondream es solo un nombre de paquete
-            model = AutoModelForCausalLM.from_pretrained(
-                model_id, trust_remote_code=True, revision=revision
-            )
-            tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
-            _moondream_model = {"model": model, "tokenizer": tokenizer}
-            print("✅ Modelo de visión cargado.")
-        except Exception as e:
-            print(f"Error cargando Moondream: {e}")
-            return None
-    return _moondream_model
+    with _vision_lock:
+        if _moondream_model is None:
+            print("Cargando modelo de visión Moondream2 (solo la primera vez)...")
+            import moondream as md
+            # moondream pypi package es un wrapper pequeño. A veces se carga directo desde transformers
+            try:
+                from transformers import AutoModelForCausalLM, AutoTokenizer
+                model_id = "vikhyatk/moondream2"
+                revision = "2024-08-26"
+                
+                # Usar AutoModel en vez de un wrapper si moondream es solo un nombre de paquete
+                model = AutoModelForCausalLM.from_pretrained(
+                    model_id, trust_remote_code=True, revision=revision
+                )
+                tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
+                _moondream_model = {"model": model, "tokenizer": tokenizer}
+                print("✅ Modelo de visión cargado.")
+            except Exception as e:
+                print(f"Error cargando Moondream: {e}")
+                return None
+        return _moondream_model
+
 
 
 def analyze_image(image_path: str, prompt: str = "Describe this image in detail.") -> str:
