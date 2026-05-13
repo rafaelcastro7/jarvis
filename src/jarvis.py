@@ -13,6 +13,8 @@ except ImportError:
     print("Instala: pip install ollama")
     sys.exit(1)
 
+from rag.ingest import search
+
 JARVIS_DIR = Path(__file__).parent.parent
 KNOWLEDGE_DIR = JARVIS_DIR / "knowledge"
 
@@ -48,17 +50,19 @@ def chat(messages: list, model: str = MODEL_CHAT) -> str:
 
 
 def main():
-    print("Jarvis v1.0 — Asistente local con Ollama")
+    print("Jarvis v1.1 — Asistente local con RAG")
     print(f"Modelo: {MODEL_CHAT} | Código: {MODEL_CODE}")
-    print("Comandos: /code (cambiar a modo código), /reset (limpiar historial), /exit")
+    print("Comandos: /code, /chat, /rag (on/off), /reset, /exit")
     print("-" * 60)
 
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     mode = "chat"
+    use_rag = True
 
     while True:
         try:
-            user_input = input(f"\n[{mode}] Tu: ").strip()
+            rag_status = "RAG: ON" if use_rag else "RAG: OFF"
+            user_input = input(f"\n[{mode} | {rag_status}] Tu: ").strip()
         except (KeyboardInterrupt, EOFError):
             print("\nHasta luego.")
             break
@@ -81,12 +85,26 @@ def main():
             mode = "chat"
             print(f"[Modo chat activado — modelo: {MODEL_CHAT}]")
             continue
+        elif user_input == "/rag":
+            use_rag = not use_rag
+            print(f"[RAG {'activado' if use_rag else 'desactivado'}]")
+            continue
 
-        messages.append({"role": "user", "content": user_input})
+        current_messages = messages.copy()
+        
+        if use_rag:
+            results = search(user_input, top_k=3)
+            if results:
+                context = "\n".join([f"De {r['file']}:\n{r['text']}" for r in results])
+                rag_prompt = f"Usa el siguiente contexto para responder si es relevante:\n{context}"
+                current_messages.append({"role": "system", "content": rag_prompt})
+
+        current_messages.append({"role": "user", "content": user_input})
+        messages.append({"role": "user", "content": user_input}) # Persistir en el historial real
         model = MODEL_CODE if mode == "code" else MODEL_CHAT
 
         try:
-            response = chat(messages, model=model)
+            response = chat(current_messages, model=model)
             messages.append({"role": "assistant", "content": response})
             print(f"\nJarvis: {response}")
         except Exception as e:

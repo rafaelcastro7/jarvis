@@ -45,15 +45,36 @@ def cosine_sim(a: list[float], b: list[float]) -> float:
     return dot / (mag_a * mag_b + 1e-9)
 
 
+def extract_text(file_path: Path) -> str:
+    if file_path.suffix.lower() == ".md" or file_path.suffix.lower() == ".txt":
+        return file_path.read_text(encoding='utf-8', errors='ignore')
+    elif file_path.suffix.lower() == ".pdf":
+        try:
+            from pypdf import PdfReader
+            reader = PdfReader(file_path)
+            return "\n".join([page.extract_text() for page in reader.pages if page.extract_text()])
+        except Exception as e:
+            print(f"  [ERROR] No se pudo leer PDF {file_path.name}: {e}")
+            return ""
+    return ""
+
+
 def ingest():
     index = []
-    md_files = list(KNOWLEDGE_DIR.rglob("*.md"))
-    print(f"Indexando {len(md_files)} archivos de {KNOWLEDGE_DIR}...")
+    extensions = ["*.md", "*.txt", "*.pdf"]
+    files = []
+    for ext in extensions:
+        files.extend(list(KNOWLEDGE_DIR.rglob(ext)))
+    
+    print(f"Indexando {len(files)} archivos de {KNOWLEDGE_DIR}...")
 
-    for md_file in md_files:
-        text = md_file.read_text(encoding='utf-8', errors='ignore')
+    for f in files:
+        text = extract_text(f)
+        if not text:
+            continue
+            
         chunks = chunk_text(text)
-        rel_path = str(md_file.relative_to(JARVIS_DIR))
+        rel_path = str(f.relative_to(JARVIS_DIR))
 
         for i, chunk in enumerate(chunks):
             try:
@@ -61,7 +82,7 @@ def ingest():
                 index.append({
                     "file": rel_path,
                     "chunk": i,
-                    "text": chunk[:500],
+                    "text": chunk[:800], # Guardamos un poco más de contexto
                     "embedding": vec,
                 })
                 print(f"  [{rel_path}] chunk {i+1}/{len(chunks)}")
