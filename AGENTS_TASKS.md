@@ -13,6 +13,8 @@ Este archivo es el punto central de coordinación para agentes paralelos. Define
 
 | ID | Tarea | Agente Asignado | Estado | Prioridad | Contexto Relacionado |
 |:---|:---|:---|:---|:---|:---|
+| T-000 | Setup Inicial y Configuración | Agente_Antigravity | ✅ Completado | Máxima | [Walkthrough](walkthrough.md) |
+| T-004 | Generar Consola de Gestión Pro | Agente_Antigravity | ✅ Completado | Alta | [dashboard/](dashboard/) |
 | T-001 | Mejorar ingest.py para OCR básico | Agente_Dev | ⏳ Pendiente | Alta | [ingest.py](src/rag/ingest.py) |
 | T-002 | Crear Skill de Automatización Odoo 18 | Agente_Architect | ⏳ Pendiente | Media | [CLAUDE.md](CLAUDE.md) |
 | T-003 | Auditar seguridad de los túneles locales | Agente_CyberSec | ⏳ Pendiente | Alta | [cybersec-defense-stack](skills/cybersec-defense-stack) |
