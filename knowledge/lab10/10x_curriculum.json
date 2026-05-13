@@ -1,0 +1,123 @@
+{
+  "path": "10x Builders: No-Code",
+  "id": "fce725d6-590c-44c2-ad1c-f674a10b190f",
+  "slug": "10x-no-code",
+  "duration": "8 semanas",
+  "format": "Programa intensivo",
+  "status_para_rafael": "Solo 1 clase accesible (Construyendo una automatización compleja) via preview de Sandra wadnipar. Resto requiere inscripción/pago.",
+  "downloaded": ["Construyendo una automatización compleja"],
+  "weeks": {
+    "Semana 1": {
+      "tema": "Fundamentos de AI y prompting",
+      "lessons": [
+        "Bienvenido al programa",
+        "Estado actual de AI",
+        "LLM & Modelos",
+        "Introducción a Markdown",
+        "Técnicas de prompting",
+        "Context engineering",
+        "Bases de conocimiento",
+        "Memoria",
+        "Input > Proceso > Output",
+        "Definición de problemas y flujos de solución",
+        "AI en el día a día - Herramientas más allá de chats",
+        "Ejercicio del proyecto: Arquitectura de tu solución"
+      ]
+    },
+    "Semana 2": {
+      "tema": "Automatizaciones con n8n y agentes",
+      "lessons": [
+        "Introducción a automatizaciones con n8n",
+        "Condicionales",
+        "Expresiones",
+        "Credenciales",
+        "JSON",
+        "Loops",
+        "Webhooks",
+        "Evaluaciones en n8n",
+        "Construyendo una automatización compleja  [DESCARGADO]",
+        "Introducción a agentes",
+        "RAG",
+        "Human in the loop",
+        "Structured output",
+        "Construcción de un sistema completo con agentes"
+      ]
+    },
+    "Semana 3": {
+      "tema": "Desarrollo asistido por IA",
+      "lessons": [
+        "Introducción a los Agentes de Código con IA",
+        "Desarrollo Guiado por Especificaciones (Spec-Driven Development) con IA",
+        "Desarrollo Full-Stack sin Código usando Lovable",
+        "Desarrollo de Aplicaciones con Replit e IA",
+        "Fundamentos del Sistema de Archivos (Filesystem)",
+        "Introducción a la Terminal y Comandos Básicos",
+        "Localhost: Desarrollo Local",
+        "Despliegue de Aplicaciones Web",
+        "Dominando Cursor: Desarrollo con IA",
+        "Árbol de Decisión para Elegir Herramientas de Desarrollo"
+      ]
+    },
+    "Semana 4": {
+      "tema": "APIs y bases de datos",
+      "lessons": [
+        "Introducción a APIs",
+        "POST, PUT, GET, DELETE",
+        "Documentaciones y Endpoints",
+        "Esquemas de datos - Introducción a Supabase",
+        "Fundamentos de SQL: Operaciones CRUD, JOINs e Inteligencia Artificial",
+        "Implementación de Row-Level Security en Supabase",
+        "Tipos de Bases de Datos: Cómo Elegir la Base de Datos Correcta",
+        "Creación de API RESTful con Cursor",
+        "Construcción de un sistema completo"
+      ]
+    },
+    "Semana 5": {
+      "tema": "Agentes autónomos OpenClaw",
+      "lessons": [
+        "Introducción a los Agentes Autónomos y OpenClaw",
+        "Agentes de IA: Implementación de Skills",
+        "Introducción a MCP: Adaptadores Universales para Agentes IA",
+        "Instalación y Configuración de OpenClaw",
+        "Despliegue de OpenCloud en la Nube con Railway",
+        "Herramientas y Skills en OpenClaw"
+      ]
+    },
+    "Semana 6": {
+      "tema": "Skills avanzadas",
+      "lessons": [
+        "Introducción a las Skills en Inteligencia Artificial",
+        "Anatomía de las Skills",
+        "Estructura y Gestión de Skills",
+        "Arquitectura de Skills",
+        "Implementar Skills en un proyecto Web",
+        "Skills Avanzadas",
+        "Instalación de Skills en OpenClaw"
+      ]
+    },
+    "Semana 7": {
+      "tema": "Producción y MVP",
+      "lessons": [
+        "Evaluación y Paso a Producción de Agentes IA",
+        "Construcción y Lanzamiento del Producto Mínimo Viable (MVP)",
+        "Alucinaciones en IA: Fluidez vs. Veracidad",
+        "Alucinaciones en IA y Verificación"
+      ]
+    },
+    "Semana 8": {
+      "tema": "DevOps y escalamiento",
+      "lessons": [
+        "Gestión de Ambientes: Desarrollo, Staging y Producción",
+        "Introducción al Despliegue de Software y sus Modelos",
+        "Monitoreo y Mantenimiento de Aplicaciones",
+        "Fundamentos de Product Management y Creación de Roadmaps",
+        "Estructura de Costos y Modelos de Precios para IA",
+        "Caso de Estudio: Producto de 0 a 100 Usuarios",
+        "Desarrollo Web con IA: De la Idea a 100 Usuarios",
+        "Arquitectura y Promoción: De 0 a 100 Usuarios",
+        "Colaboración con equipos técnicos en proyectos de IA",
+        "Conclusión del Curso y Siguientes Pasos en Lab10 Pro"
+      ]
+    }
+  }
+}
