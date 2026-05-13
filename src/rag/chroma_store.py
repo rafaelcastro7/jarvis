@@ -42,14 +42,32 @@ def add_documents(texts: list[str], metadatas: list[dict]):
     vectorstore.persist()
     print(f"✅ {len(docs)} fragmentos guardados en ChromaDB.")
 
-def search(query: str, top_k: int = 3):
-    """Realiza una búsqueda de similitud en ChromaDB."""
+def search(query: str, top_k: int = 3, use_hyde: bool = False):
+    """Realiza una búsqueda de similitud en ChromaDB, con soporte opcional para HyDE."""
     vectorstore = get_vectorstore()
-    results = vectorstore.similarity_search_with_score(query, k=top_k)
+    
+    search_query = query
+    if use_hyde:
+        try:
+            from langchain_community.chat_models import ChatOllama
+            from langchain.schema import HumanMessage
+            
+            # Generamos un documento hipotético que responda a la query
+            llm = ChatOllama(model="qwen2.5-coder:7b", base_url="http://localhost:11434")
+            prompt = f"Please write a short, factual paragraph that answers or addresses the following query. Do not add conversational filler, just provide the raw answer/information.\n\nQuery: {query}"
+            
+            hypothetical_doc = llm.invoke([HumanMessage(content=prompt)]).content
+            # Combinamos la query original con el documento hipotético para maximizar relevancia
+            search_query = f"{query}\n\n{hypothetical_doc}"
+            print(f"[HyDE] Generado documento hipotético para la búsqueda.")
+        except Exception as e:
+            print(f"[HyDE Error] Falló la generación, usando búsqueda estándar: {e}")
+            
+    results = vectorstore.similarity_search_with_score(search_query, k=top_k)
     
     formatted_results = []
     for doc, score in results:
-        # En Chroma, la distancia (score) menor es mejor similitud a menudo, pero Langchain normaliza en algunos casos.
+        # En Chroma, la distancia (score) menor es mejor similitud a menudo
         formatted_results.append({
             "file": doc.metadata.get("source", "Desconocido"),
             "chunk": doc.metadata.get("chunk_id", 0),

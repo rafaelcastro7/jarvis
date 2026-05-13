@@ -21,9 +21,10 @@ def get_god_mode_agent():
     """Configura el agente ReAct con todas las herramientas de Jarvis."""
     llm = ChatOllama(model="qwen2.5-coder:7b", base_url="http://localhost:11434")
     
-    # 1. Herramienta RAG (Conocimiento Local)
+    # 1. Herramienta RAG (Conocimiento Local con HyDE)
     def rag_tool(query: str) -> str:
-        results = rag_search(query, top_k=3)
+        # Activamos HyDE para mejorar la recuperación semántica
+        results = rag_search(query, top_k=3, use_hyde=True)
         if not results:
             return "No encontré información local sobre eso."
         return "\n\n".join([f"Fuente: {r['file']}\nContenido: {r['text']}" for r in results])
