@@ -6,3 +6,4 @@
 - [Platzi Clone + Local AI + Rutan Academy](project_platzi_clone.md) — 24 cursos Platzi (421 videos 37GB). Rutan: 41 videos todos descargados, todos módulos desbloqueados, player local con sidebar+nav. RAG enriquecido con transcripts Whisper. Skill venture-investor actualizado.
 - [Lab10 Clone Project](project_lab10_clone.md) — 49 videos (1.7GB LMS Reto Agentes + 4.7GB YT Talleres) + skills lab10-reto-agentes/lab10-talleres-yt/lab10-rag
 - [User Cybersecurity Focus](user_cybersec_focus.md) - 8 skills cybersec vendors + defense stack maestro
+- **[META DIRECTIVE]** — CORE WORKFLOW RULE: Whenever a new task is requested, automatically generate a corresponding skill in the `skills/` directory and update the memory/context files to reflect the new capability or knowledge.
