@@ -7,3 +7,6 @@
 - [Lab10 Clone Project](project_lab10_clone.md) — 49 videos (1.7GB LMS Reto Agentes + 4.7GB YT Talleres) + skills lab10-reto-agentes/lab10-talleres-yt/lab10-rag
 - [User Cybersecurity Focus](user_cybersec_focus.md) - 8 skills cybersec vendors + defense stack maestro
 - **[META DIRECTIVE]** — CORE WORKFLOW RULE: Whenever a new task is requested, automatically generate a corresponding skill in the `skills/` directory and update the memory/context files to reflect the new capability or knowledge.
+- **2026-05-13** — `skills/skill_cyber_attacks_defense.md` en `CLAUDE.md` (`/cyber-attacks-defense`); RAG vía `python src/rag/ingest.py` (confirmar mensaje `Indexación completada con ChromaDB`).
+- **2026-05-13 (b)** — Inventario `skills/`: todas las carpetas (44) + `skill_*.md` en raíz quedaron referenciadas en `CLAUDE.md` (incl. `/vertex-ai`, `/agentic-workflows`, `/anthropic-architect`, `/venture-investor`, `/lanchmon-rutan`, `/solana-hackathon`, `/meta-workflow`, `/simplify` con `skills/simplify/SKILL.md`). Odoo: solo comandos en repo OdooFactory. Tras pull: `python src/rag/ingest.py`.
+

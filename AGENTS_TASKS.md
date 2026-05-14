@@ -4,7 +4,7 @@ Este archivo es el punto central de coordinación para agentes paralelos. Define
 
 ## 🌍 Contexto Global
 - **Proyecto**: Jarvis Local AI Assistant
-- **Estado Actual**: Instalación completa. RAG v1.1 activo (MD, TXT, PDF). 43 skills cargadas.
+- **Estado Actual**: Instalación completa. RAG v1.1 activo (MD, TXT, PDF). **44 carpetas** en `skills/` + 2 metadocs raíz (`skill_cyber_attacks_defense.md`, `skill_meta_workflow.md`); índice slash-commands en `CLAUDE.md` sincronizado 2026-05-13. Re-indexar con `python src/rag/ingest.py` tras cambios.
 - **Objetivo Principal**: Mantener autonomía total sin depender de APIs de pago.
 
 ---
@@ -26,7 +26,7 @@ Este archivo es el punto central de coordinación para agentes paralelos. Define
 ### Variables de Entorno (Shared Memory)
 *   `OLLAMA_BASE_URL`: http://localhost:11434
 *   `RAG_INDEX_PATH`: src/rag/index.json
-*   `LAST_INGEST`: 2026-05-13T18:40:30
+*   `LAST_INGEST`: 2026-05-13 (re-ejecutar `python src/rag/ingest.py` tras añadir skills o knowledge)
 
 ### Referencias de Memoria Activa
 - [Técnicas de Scraping](memory/feedback_scraping.md)

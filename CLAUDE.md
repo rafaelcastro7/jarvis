@@ -44,7 +44,7 @@ Email: rafaelc at braintrainr.ai · rafaelcastro7@gmail.com
 | `/git-workflow` | Commit semántico seguro |
 | `/new-feature` | Flujo 7 fases para features nuevas |
 | `/project-audit` | Auditoría rápida de cualquier proyecto |
-| `/simplify` | Revisar código cambiado, eliminar redundancias |
+| `/simplify` | Revisar código cambiado, eliminar redundancias (`skills/simplify/SKILL.md`) |
 
 ## Skills — Stack técnico
 
@@ -58,6 +58,12 @@ Email: rafaelc at braintrainr.ai · rafaelcastro7@gmail.com
 | `/playwright-e2e` | Tests E2E con webServer config, API tests, localStorage injection |
 | `/pdf-export-frontend` | html2canvas + jsPDF lazy-loaded, scale:2, multipage |
 
+## Skills — Google Cloud / GenAI (ML)
+
+| Skill | Uso |
+| --- | --- |
+| `/vertex-ai` | Vertex AI, Gemini API, Model Garden, Vector Search, RAG Engine, Agent Builder, labs skills.google (`skills/vertex-ai/`) |
+
 ## Skills — Datos y análisis
 
 | Skill | Uso |
@@ -67,11 +73,31 @@ Email: rafaelc at braintrainr.ai · rafaelcastro7@gmail.com
 | `/forensic-analysis` | Motor de riesgo forense: bunching, similitud semántica, scoring Red/Orange/Green |
 | `/multiagent` | Agentes paralelos — tipos, cuándo usarlos, prompts autocontenidos |
 
+## Skills — IA, agentes y certificación Anthropic
+
+| Skill | Uso |
+| --- | --- |
+| `/agentic-workflows` | ReAct, Plan-and-Execute, self-reflection, orquestación multi-agente local (`skills/agentic-workflows/`) |
+| `/anthropic-architect` | Claude Certified Architect: Agent SDK, tool use, MCP, Claude Code en equipos (`skills/anthropic-architect/`) |
+
+## Skills — Inversión (Rutan / LATAM)
+
+| Skill | Uso |
+| --- | --- |
+| `/venture-investor` | Investor Academy Rutan — ángel y VC, ecosistema COL/LATAM (`skills/venture-investor/`) |
+| `/lanchmon-rutan` | Portal Lanchmon iNNpulsa — academy, bots IA (valuation, pitch, market size) (`skills/lanchmon-rutan/`) |
+
+## Skills — Web3 / hackathon
+
+| Skill | Uso |
+| --- | --- |
+| `/solana-hackathon` | Colosseum Frontier, stack Solana, track IA Agents, recursos RPC (`skills/solana-hackathon/`) |
+
 ## Skills — Cloud & Seguridad
 
 | Skill | Uso |
 | --- | --- |
-| `/google-cloud-cybersecurity` | GCP Security: IAM, SCC, NIST CSF, Incident Response, DevSecOps, GenAI en security |
+| `/google-cloud-cybersecurity` | GCP Security: IAM, SCC, NIST CSF, Incident Response, DevSecOps, GenAI en security (apuntes extensos: `skills/google-cloud-cybersecurity/course_notes_full.md`) |
 | `/cybersec-defense-stack` | **MAESTRO** defense-in-depth 8 layers + NIST CSF + IR playbook + presentación evidencia |
 | `/cybersec-ec-council-ceh` | CEH v13 — 5 fases ataque + 20 módulos + reporting estilo CEH |
 | `/cybersec-ridgebot` | Automated pentest AI · MITRE ATT&CK · Botlets · continuous testing |
@@ -80,6 +106,7 @@ Email: rafaelc at braintrainr.ai · rafaelcastro7@gmail.com
 | `/cybersec-palo-alto-cortex` | XSIAM unificado (SIEM+SOAR+XDR+UEBA+ASM) + Prisma Cloud CNAPP |
 | `/cybersec-fortinet-fabric` | Security Fabric (NGFW + EDR + Analyzer + SOAR) + hardening best practices |
 | `/cybersec-radware` | Cloud WAF + DDoS app-layer + Bot Management + API protection |
+| `/cyber-attacks-defense` | OWASP Top 10 vistos desde blue team: inyección, XSS, CSRF, broken access control + defensa en profundidad (`skills/skill_cyber_attacks_defense.md`) |
 
 ## Skills — Lab10 (programa AI Builders)
 
@@ -109,6 +136,12 @@ Email: rafaelc at braintrainr.ai · rafaelcastro7@gmail.com
 | `/tunnel-manager` | Cloudflare tunnels — proteger URL, watchdog, restart seguro, NUNCA matar cloudflared |
 | `/hackathon-dashboard` | React dashboard tabs, QCard/BigAnswer, Recharts, publicación tunnel |
 
+## Skills — Metadoc Jarvis (evolución del repo)
+
+| Skill | Uso |
+| --- | --- |
+| `/meta-workflow` | Tras tareas relevantes: nuevo skill en `skills/`, actualizar `memory/MEMORY.md`, re-ejecutar ingest RAG (`skills/skill_meta_workflow.md`) |
+
 ## Skills — OdooFactory (proyecto específico)
 
-`/odoo-check` `/odoo-deploy` `/odoo-tunnel`
+Comandos habituales en el repo OdooFactory (no hay carpeta equivalente en este repo): `/odoo-check` `/odoo-deploy` `/odoo-tunnel`
